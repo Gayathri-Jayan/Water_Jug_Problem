@@ -444,8 +444,9 @@ if submitted:
         int(target),
     )
     st.session_state.pop("water_lab_result", None)
-    st.session_state["water_lab_step"] = 0
-    st.session_state.pop("water_lab_slider", None)
+
+    # Reset the slider for the new problem.
+    st.session_state["water_lab_slider"] = 0
 
 
 if "water_lab_config" not in st.session_state:
@@ -501,14 +502,32 @@ if explored:
 section_heading("03", "LIVE WATER SIMULATION")
 st.subheader("Watch each state come to life")
 
-if "water_lab_step" not in st.session_state:
-    st.session_state["water_lab_step"] = 0
+# Use one session-state key for both buttons and slider.
+if "water_lab_slider" not in st.session_state:
+    st.session_state["water_lab_slider"] = 0
 
+# Keep the selected step within the available solution range.
 current_step = max(
     0,
-    min(st.session_state["water_lab_step"], total_steps),
+    min(int(st.session_state["water_lab_slider"]), total_steps),
 )
-st.session_state["water_lab_step"] = current_step
+
+
+def go_to_previous_step():
+    """Move one step backward before Streamlit reruns the app."""
+    st.session_state["water_lab_slider"] = max(
+        0,
+        int(st.session_state["water_lab_slider"]) - 1,
+    )
+
+
+def go_to_next_step():
+    """Move one step forward before Streamlit reruns the app."""
+    st.session_state["water_lab_slider"] = min(
+        total_steps,
+        int(st.session_state["water_lab_slider"]) + 1,
+    )
+
 
 state_a, state_b = states[current_step]
 
@@ -541,36 +560,29 @@ st.markdown(f"**Operation:** {path[current_step]['operation']}")
 previous_col, slider_col, next_col = st.columns([1, 2, 1])
 
 with previous_col:
-    if st.button(
+    st.button(
         "← Previous",
         disabled=current_step == 0,
         width="stretch",
-    ):
-        st.session_state["water_lab_step"] = current_step - 1
-        st.rerun()
+        on_click=go_to_previous_step,
+    )
 
 with slider_col:
-    selected_step = st.slider(
+    st.slider(
         "Explore solution step",
         min_value=0,
         max_value=total_steps,
-        value=current_step,
         key="water_lab_slider",
     )
 
-    if selected_step != current_step:
-        st.session_state["water_lab_step"] = selected_step
-        st.rerun()
-
 with next_col:
-    if st.button(
+    st.button(
         "Next →",
         disabled=current_step >= total_steps,
         type="primary",
         width="stretch",
-    ):
-        st.session_state["water_lab_step"] = current_step + 1
-        st.rerun()
+        on_click=go_to_next_step,
+    )
 
 
 # =========================================================
