@@ -4,7 +4,7 @@
 
 This project solves the Water Jug Problem using Breadth-First Search (BFS). The application allows users to enter the capacities of two jugs and the required amount of water, then displays the steps needed to reach the target.
 
-**Live Demo:** [Water Jug Problem Solver](https://water-jug-solver-zgcfjkas5rqv2nsggwbnf.streamlit.app/)
+**Live Demo:** [Water Jug Problem Solver](https://water-jug-solver-zgcfjkasx5rqv2nsggwbnf.streamlit.app/)
 
 **GitHub Repository:** [water-jug-solver](https://github.com/Gourikrishna1311/water-jug-solver)
 
