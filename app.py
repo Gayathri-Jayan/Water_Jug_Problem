@@ -82,23 +82,43 @@ div[data-testid="stMetricValue"] {
 
 .stButton > button,
 .stDownloadButton > button {
+    background: #142a40 !important;
+    color: #eaf7ff !important;
     border-radius: 11px;
     min-height: 44px;
     font-weight: 700;
-    border: 1px solid #3a657c;
+    border: 1px solid #3a657c !important;
     transition: all .2s ease;
 }
 
+/* Keep primary actions bright, but consistent with the dark theme. */
 .stButton > button[kind="primary"] {
-    background: linear-gradient(100deg, #51dce9, #8a9dff);
-    color: #081321;
-    border: none;
+    background: linear-gradient(100deg, #51dce9, #8a9dff) !important;
+    color: #081321 !important;
+    border: none !important;
 }
 
-.stButton > button:hover,
-.stDownloadButton > button:hover {
-    border-color: #51e5f2;
+/* Streamlit renders disabled buttons with a pale default background. */
+.stButton > button:disabled,
+.stDownloadButton > button:disabled {
+    background: #102035 !important;
+    color: #7892a8 !important;
+    border: 1px solid #263f55 !important;
+    opacity: 1 !important;
+    cursor: not-allowed;
+}
+
+.stButton > button:hover:not(:disabled),
+.stDownloadButton > button:hover:not(:disabled) {
+    background: #1a354d !important;
+    color: #ffffff !important;
+    border-color: #51e5f2 !important;
     transform: translateY(-1px);
+}
+
+.stButton > button[kind="primary"]:hover:not(:disabled) {
+    background: linear-gradient(100deg, #68e8f2, #a5aaff) !important;
+    color: #081321 !important;
 }
 
 div[data-testid="stNumberInput"] input {
@@ -107,10 +127,49 @@ div[data-testid="stNumberInput"] input {
     border-radius: 10px;
 }
 
+/* Expander body and header: override Streamlit's default white summary bar. */
 div[data-testid="stExpander"] {
-    border: 1px solid #29445b;
-    border-radius: 14px;
-    background: #0d1b2b;
+    border: 1px solid #29445b !important;
+    border-radius: 14px !important;
+    background: #0d1b2b !important;
+    overflow: hidden;
+}
+
+div[data-testid="stExpander"] details,
+div[data-testid="stExpander"] details > summary {
+    background: #112238 !important;
+    color: #dcecff !important;
+    border: 0 !important;
+}
+
+div[data-testid="stExpander"] details > summary {
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+}
+
+div[data-testid="stExpander"] details > summary:hover {
+    background: #18334b !important;
+    color: #51e5f2 !important;
+}
+
+div[data-testid="stExpander"] details > summary p,
+div[data-testid="stExpander"] details > summary span,
+div[data-testid="stExpander"] details > summary svg {
+    color: #dcecff !important;
+    fill: #dcecff !important;
+}
+
+div[data-testid="stExpander"] details > summary:hover p,
+div[data-testid="stExpander"] details > summary:hover span,
+div[data-testid="stExpander"] details > summary:hover svg {
+    color: #51e5f2 !important;
+    fill: #51e5f2 !important;
+}
+
+div[data-testid="stExpander"] [data-testid="stExpanderDetails"] {
+    background: #0b1726 !important;
+    color: #d3e1ee !important;
+    padding: 12px 16px !important;
 }
 
 div[data-testid="stAlert"] {
@@ -275,6 +334,36 @@ hr {
 div[data-testid="stProgressBar"] > div > div {
     background: linear-gradient(90deg, #51e5f2, #8a9dff);
 }
+
+/* Remove the white strip at the top */
+header[data-testid="stHeader"] {
+    background: #081321 !important;
+}
+
+/* Match the toolbar to the dark theme */
+[data-testid="stToolbar"] {
+    background: transparent !important;
+}
+
+/* Remove the white decoration bar */
+[data-testid="stDecoration"] {
+    background: transparent !important;
+    height: 0 !important;
+}
+
+/* Keep the whole Streamlit page dark */
+.stApp,
+[data-testid="stAppViewContainer"],
+[data-testid="stMain"] {
+    background: #081321 !important;
+}
+
+/* Keep the top controls from showing a white background */
+header[data-testid="stHeader"] button {
+    background: transparent !important;
+    color: #eaf4ff !important;
+}
+
 </style>
 """)
 
@@ -475,8 +564,9 @@ except (ValueError, TypeError, KeyError) as error:
 # =========================================================
 if not path:
     st.warning(
-        "No solution path was returned. Try another target or check "
-        "the return format of bfs_solve() in solver.py."
+        f"Target {target} L cannot be measured with "
+        f"jug capacities {capacity_a} L and {capacity_b} L. "
+        "Try a different target or jug capacity."
     )
     st.stop()
 
@@ -567,13 +657,18 @@ with previous_col:
         on_click=go_to_previous_step,
     )
 
+
 with slider_col:
-    st.slider(
-        "Explore solution step",
-        min_value=0,
-        max_value=total_steps,
-        key="water_lab_slider",
-    )
+    if total_steps == 0:
+        st.info("The target is already satisfied. No operations are needed.")
+    else:
+        selected_step = st.slider(
+            "Solution progress",
+            min_value=0,
+            max_value=total_steps,
+            value=current_step,
+            key="water_lab_slider",
+        )
 
 with next_col:
     st.button(
@@ -721,3 +816,12 @@ render_html("""
     WATER LAB · MFC PROJECT P009 · POWERED BY BREADTH-FIRST SEARCH
 </div>
 """)
+
+
+if not path:
+    st.warning(
+        f"Target {target} L cannot be measured with "
+        f"jug capacities {capacity_a} L and {capacity_b} L. "
+        "Try a different target or jug capacity."
+    )
+    st.stop()
