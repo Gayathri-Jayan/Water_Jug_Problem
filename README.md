@@ -1,110 +1,211 @@
-# Water Jug Problem Solver
 
-**MFC Project**
+# 💧 Water Jug Problem Solver
 
-This project solves the Water Jug Problem using Breadth-First Search (BFS). The application allows users to enter the capacities of two jugs and the required amount of water, then displays the steps needed to reach the target.
+**MFC Project P009 | Graph Theory Lab**
 
-**Live Demo:** [Water Jug Problem Solver](https://water-jug-solver-zgcfjkasx5rqv2nsggwbnf.streamlit.app/)
+An interactive web application that solves the classic Water Jug Problem using **Breadth-First Search (BFS)**. Built with Python and Streamlit, it finds the shortest sequence of operations to reach a target quantity and visualizes the solution through interactive state-space graphs and step-by-step water simulation.
 
-**GitHub Repository:** [water-jug-solver](https://github.com/Gourikrishna1311/water-jug-solver)
+**🚀 Live Demo:** [Water Jug Problem Solver](https://water-jug-solver.streamlit.app/)
 
-## Features
+**📂 GitHub Repository:** [Water Jug Problem Solver](https://github.com/Gayathri-Jayan/Water_Jug_Problem)
 
-- Enter the capacities of two water jugs and the target quantity.
-- Find a solution using BFS.
-- View the amount of water in each jug at every step.
-- Navigate through the solution step by step.
-- Visualize the state-space graph and solution path.
+---
+
+## ✨ Features
+
+- Solve the Water Jug Problem using BFS.
+- Configure the capacities of both jugs and the target quantity.
+- Find a solution with the minimum number of operations.
+- View water levels through live simulation.
+- Navigate through solution steps using Previous and Next controls.
+- Visualize the complete state-space graph.
+- View the shortest solution path with highlighted transitions.
+- Explore solution traces and visited states.
 - Download the solution as a text file.
+- Automated testing with pytest.
 
-## Problem Description
+---
 
-The Water Jug Problem involves measuring a specific quantity of water using two jugs of different capacities. The available operations are filling a jug, emptying a jug, and pouring water from one jug into the other.
+## 📸 Application Screenshots
 
-Each state is represented as `(x, y)`, where `x` and `y` denote the amounts of water in Jug A and Jug B, respectively.
+### 1. Live Water Simulation
 
-The initial state is `(0, 0)`. The objective is to reach a state in which either jug contains the required quantity of water.
+Observe the water levels in both jugs and navigate through the solution step by step.
 
-## Algorithm Used
+![Live Water Simulation](screenshots/live-simulation.png)
 
-Breadth-First Search (BFS) is used to explore the possible states of the problem. It visits states level by level and uses a queue to manage the search.
+### 2. State-Space Graph
 
-Visited states are tracked to avoid unnecessary repetition. Once the target state is found, the sequence of operations is used to display the solution.
+Explore reachable states and transitions, including the initial state, goal states, and BFS solution transitions.
 
-Since every operation has equal cost, BFS finds the solution with the minimum number of operations.
+![Water Jug State-Space Graph](screenshots/state-space-graph.png)
 
-## Technologies Used
+### 3. BFS Shortest Solution Path
 
-- Python
-- Streamlit
-- NetworkX
-- Matplotlib
+Visualize the shortest path from the initial state to the target state.
 
-## Project Files
+![BFS Shortest Solution Path](screenshots/shortest-path.png)
 
-| File | Purpose |
+---
+
+## 🧩 Problem Description
+
+The Water Jug Problem involves measuring a specific quantity of water using two jugs of different capacities.
+
+The permitted operations are:
+
+1. Fill either jug completely.
+2. Empty either jug.
+3. Pour water from one jug into the other until the source is empty or the destination is full.
+
+Each state is represented as `(x, y)`, where:
+
+- `x` is the amount of water in Jug A.
+- `y` is the amount of water in Jug B.
+
+The initial state is `(0, 0)`. The objective is to reach a state in which either jug contains the required target quantity.
+
+---
+
+## 🧠 Algorithm Used: Breadth-First Search (BFS)
+
+The problem is represented as a state-space graph:
+
+- **Nodes:** Possible water configurations `(x, y)`.
+- **Edges:** Valid operations that transform one state into another.
+- **Initial state:** `(0, 0)`.
+- **Goal state:** A state in which either jug contains the target quantity.
+
+BFS explores states level by level using a queue. A visited-state set prevents repeated exploration, and the solution path records the operations needed to reach the target.
+
+Since every operation has equal cost, BFS finds a solution with the minimum number of operations whenever a solution exists.
+
+---
+
+## 🛠️ Technologies Used
+
+| Technology | Purpose |
 |---|---|
-| `app.py` | Main application and user interface |
+| Python | Core programming language and solver logic |
+| Streamlit | Interactive web application interface |
+| NetworkX | State-space graph creation and manipulation |
+| Plotly | Interactive graph visualization |
+| pytest | Automated testing |
+
+---
+
+## 📁 Project Structure
+
+```text
+water-jug-solver/
+├── app.py
+├── solver.py
+├── graph_visualizer.py
+├── test_solver.py
+├── requirements.txt
+├── README.md
+└── screenshots/
+    ├── live-simulation.png
+    ├── state-space-graph.png
+    └── shortest-path.png
+```
+
+| File or Folder | Purpose |
+|---|---|
+| `app.py` | Main Streamlit application and user interface |
 | `solver.py` | BFS algorithm and problem-solving logic |
-| `graph_visualizer.py` | Graph visualization |
-| `tests.py` | Test cases |
-| `requirements.txt` | Required Python libraries |
+| `graph_visualizer.py` | State-space graph and shortest-path visualization |
+| `test_solver.py` | Automated tests for the solver |
+| `requirements.txt` | Required Python packages |
+| `screenshots/` | Application screenshots used in this README |
 
-## Installation and Execution
+---
 
-**1. Clone the repository**
+## ⚙️ Installation and Execution
 
-```bash
-git clone https://github.com/Gourikrishna1311/water-jug-solver.git
-```
+### Prerequisites
 
-**2. Open the project folder**
+- Python 3.10 or later
+- Git
+- pip
 
-```bash
-cd water-jug-solver
-```
-
-**3. Install the required libraries**
+### 1. Clone the repository
 
 ```bash
-pip install -r requirements.txt
+git clone https://github.com/Gayathri-Jayan/Water_Jug_Problem.git
 ```
 
-**4. Run the application**
+### 2. Open the project folder
+
+```bash
+cd Water_Jug_Problem
+```
+
+### 3. Install dependencies
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+### 4. Run the application
 
 ```bash
 python -m streamlit run app.py
 ```
 
-The application will open in the browser.
+The application will open in your browser, usually at `http://localhost:8501`.
 
-## Example
+---
 
-Consider two jugs with capacities of 4 litres and 3 litres. The target is to measure 2 litres.
+## ▶️ Example
+
+Consider two jugs with capacities of **6 litres** and **4 litres**, with a target of **2 litres**.
 
 | Step | Operation | State (A, B) |
-|---|---|---|
-| 0 | Start | (0, 0) |
-| 1 | Fill Jug B | (0, 3) |
-| 2 | Pour B into A | (3, 0) |
-| 3 | Fill Jug B | (3, 3) |
-| 4 | Pour B into A | (4, 2) |
+|---:|---|---|
+| 0 | Initial state | `(0, 0)` |
+| 1 | Fill Jug A | `(6, 0)` |
+| 2 | Pour Jug A into Jug B | `(2, 4)` |
 
-The target is reached in four operations.
+The target of 2 litres is reached in **2 operations**.
 
-## Testing
+---
 
-The solver was tested using seven test cases covering different target quantities and solution conditions.
+## 🧪 Testing
 
-To run the tests:
+The solver has **11 automated tests passing**, covering solvable and unsolvable configurations, zero targets, jug-capacity boundaries, and other edge cases.
+
+Run the tests using:
 
 ```bash
-python -m pytest tests.py -v
+python -m pytest -v
 ```
 
-## Conclusion
+Expected result:
 
-This project demonstrates how BFS can be used to solve the Water Jug Problem by representing possible configurations as graph states. The web interface makes it easier to understand the operations and follow the solution.
+```text
+11 passed
+```
+
+---
+
+## 🎯 Learning Outcomes
+
+This project demonstrates:
+
+- Applying graph-search algorithms to a classic problem.
+- Representing configurations as graph states.
+- Using BFS to find shortest paths in an unweighted graph.
+- Visualizing state transitions and solution paths.
+- Developing an interactive application using Streamlit.
+- Testing algorithmic behavior with pytest.
+
+---
+
+## 🏁 Conclusion
+
+The Water Jug Problem Solver combines graph theory, Breadth-First Search, and interactive visualization to demonstrate how search algorithms explore possible states and find shortest solutions. Its simulation and graph views make the problem easier to understand and explore.
 
 **Project:** Water Jug Problem Solver  
-**Subject:** MFC
+**Project ID:** MFC P009  
+**Subject:** MFC — Graph Theory Lab
